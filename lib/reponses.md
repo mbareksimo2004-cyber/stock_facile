@@ -1,0 +1,4 @@
+- SQLite n'a pas de type `BOOLEAN` ni `DATETIME`. Du coup, `disponible` est stocké dans un `INTEGER` (1 pour vrai, 0 pour faux) et `date_ajout` dans un `TEXT` au format ISO 8601, par exemple `2026-10-01T09:00:00`. Ce format a l'avantage de se trier correctement.
+- `AUTOINCREMENT` crée l'`id` tout seul à chaque insertion, et un `id` supprimé n'est jamais réutilisé. `UNIQUE` sur `nom` empêche d'avoir deux catégories avec le même nom. `CHECK (prix >= 0)` fait refuser les prix négatifs par la base elle-même.
+- `ON DELETE RESTRICT` veut dire qu'on ne peut pas supprimer une catégorie tant qu'il reste des produits dedans.
+je ferme la base avant de lancer mon application, car SQLite ne doit pas être utilisé par deux programmes en même temps. Sinon, le fichier peut être verrouillé (erreur « database is locked »), et des modifications peuvent être perdues ou la base abîmée.
